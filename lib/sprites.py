@@ -1,3 +1,4 @@
+# pyright: reportOptionalMemberAccess = false
 from settings import *
 
 class AllSprites(pygame.sprite.Group):
@@ -35,3 +36,22 @@ class Player(Sprite):
         self.direction = pygame.Vector2()
         self.speed = 400
         self.collision_sprites = collision_sprites
+
+    def input(self):
+        keys = pygame.key.get_pressed()
+        self.direction.x = int(keys[pygame.K_RIGHT]) - int(keys[pygame.K_LEFT])
+        self.direction.y = int(keys[pygame.K_DOWN]) - int(keys[pygame.K_UP])
+        self.direction = self.direction.normalize() if self.direction else self.direction
+
+    def collide(self, direction):
+        pass
+
+    def move(self, dt):
+        self.rect.x += self.direction.x * self.speed * dt
+        self.collide("horizontal")
+        self.rect.y += self.direction.y * self.speed * dt
+        self.collide("vertical")
+
+    def update(self, dt):
+        self.input()
+        self.move(dt)
