@@ -11,6 +11,7 @@ class Player(AnimatedSprite):
         self.gravity = 50
         self.collision_sprites = collision_sprites
         self.on_ground = False
+        self.flip = False
 
     def input(self):
         keys = pygame.key.get_pressed()
@@ -42,6 +43,16 @@ class Player(AnimatedSprite):
         collide_rects = [x.rect for x in self.collision_sprites]
 
         self.on_ground = True if bottom_rect.collidelist(collide_rects) >= 0 else False
+
+    def animate(self, dt):
+        if self.direction.x:
+            self.frames_idx += self.animation_speed * dt
+            self.flip = self.direction.x < 0
+        else: self.frames_idx = 0
+
+        self.frames_idx = 1 if not self.on_ground else self.frames_idx
+        self.image = self.frames[int(self.frames_idx) % len(self.frames)]
+        self.image = pygame.transform.flip(self.image, self.flip, False)
 
     def update(self, dt):
         self.check_floor()
