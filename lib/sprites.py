@@ -44,7 +44,14 @@ class Player(Sprite):
         self.direction = self.direction.normalize() if self.direction else self.direction
 
     def collide(self, direction):
-        pass
+        for sprite in self.collision_sprites:
+            if sprite.rect.colliderect(self.rect):
+                if direction == "horizontal":
+                    if self.direction.x > 0: self.rect.right = sprite.rect.left
+                    if self.direction.x < 0: self.rect.left = sprite.rect.right
+                else:
+                    if self.direction.y < 0: self.rect.top = sprite.rect.bottom
+                    if self.direction.y > 0: self.rect.bottom = sprite.rect.top
 
     def move(self, dt):
         self.rect.x += self.direction.x * self.speed * dt
