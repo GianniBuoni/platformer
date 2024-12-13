@@ -1,6 +1,7 @@
 # pyright: reportOptionalMemberAccess = false
 from settings import *
 from lib.sprites import *
+from lib.helpers import *
 
 class Game:
     def __init__(self):
@@ -16,7 +17,18 @@ class Game:
         self.collision_sprites = pygame.sprite.Group()
 
         # map setup
+        self.load_assets()
         self.map_setup()
+
+    def load_assets(self):
+        # player
+        self.player_frames = load_dir("images", "player")
+        self.bullet_surface = load_img("images", "gun", "bullet")
+        self.fire_surface = load_img("images", "gun", "fire")
+
+        # enemies
+        self.bee_frames = load_dir("images", "enemies", "bee")
+        self.worm_frames = load_dir("images", "enemies", "worm")
 
     def map_setup(self):
         map = load_pygame(join("data", "maps", "world.tmx"))
