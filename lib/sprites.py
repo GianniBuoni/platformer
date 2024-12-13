@@ -11,15 +11,11 @@ class AllSprites(pygame.sprite.Group):
         self.offset.x = -(player_pos[0] - WINDOW_WIDTH / 2)
         self.offset.y = -(player_pos[1] - WINDOW_HEIGHT / 2)
 
-        ground_sprites = [x for x in self if hasattr(x, "ground")]
-        object_sprites = [x for x in self if not hasattr(x, "ground")]
-
-        for layer in [ground_sprites, object_sprites]:
-            for sprite in sorted(layer, key = lambda x: x.rect.centery):
-                self.surface.blit(
-                    sprite.image,
-                    sprite.rect.topleft + self.offset
-                )
+        for sprite in self:
+            self.surface.blit(
+                sprite.image,
+                sprite.rect.topleft + self.offset
+            )
 
 class Sprite(pygame.sprite.Sprite):
     def __init__(self, pos, surface, groups):
@@ -47,11 +43,11 @@ class Player(Sprite):
         for sprite in self.collision_sprites:
             if sprite.rect.colliderect(self.rect):
                 if direction == "horizontal":
-                    if self.direction.x > 0: self.rect.right = sprite.rect.left
-                    if self.direction.x < 0: self.rect.left = sprite.rect.right
+                    if self.direction.x > 0: self.rect.right = sprite.rect.left # moving left -> right
+                    if self.direction.x < 0: self.rect.left = sprite.rect.right # moving right -> left
                 else:
-                    if self.direction.y < 0: self.rect.top = sprite.rect.bottom
-                    if self.direction.y > 0: self.rect.bottom = sprite.rect.top
+                    if self.direction.y < 0: self.rect.top = sprite.rect.bottom # moving down -> up
+                    if self.direction.y > 0: self.rect.bottom = sprite.rect.top # moving up -> down
 
     def move(self, dt):
         self.rect.x += self.direction.x * self.speed * dt
