@@ -2,6 +2,7 @@
 from settings import *
 from lib.sprites import *
 from lib.helpers import *
+from lib.player import Player
 
 class Game:
     def __init__(self):
@@ -51,6 +52,7 @@ class Game:
             if obj.name == "Player":
                 self.player = Player(
                     (obj.x, obj.y),
+                    self.player_frames,
                     self.all_sprites,
                     self.collision_sprites
                 )
