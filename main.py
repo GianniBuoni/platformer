@@ -1,4 +1,5 @@
 # pyright: reportOptionalMemberAccess = false
+from pygame.mixer import music
 from settings import *
 from lib.sprites import *
 from lib.helpers import *
@@ -30,6 +31,9 @@ class Game:
         # enemies
         self.bee_frames = load_dir("images", "enemies", "bee")
         self.worm_frames = load_dir("images", "enemies", "worm")
+
+        # audio
+        self.audio = audio_import("audio")
 
     def map_setup(self):
         map = load_pygame(join("data", "maps", "world.tmx"))
