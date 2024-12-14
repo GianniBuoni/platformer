@@ -1,5 +1,6 @@
 # pyright: reportOptionalMemberAccess = false
 from lib.sprites import *
+from lib.timers import Timer
 
 class Player(AnimatedSprite):
     def __init__(self, pos, frames, groups, collision_sprites):
@@ -13,11 +14,18 @@ class Player(AnimatedSprite):
         self.on_ground = False
         self.flip = False
 
+        # timers
+        self.shoot_timer = Timer(500)
+
     def input(self):
         keys = pygame.key.get_pressed()
         self.direction.x = int(keys[pygame.K_RIGHT]) - int(keys[pygame.K_LEFT])
         if keys[pygame.K_SPACE] and self.on_ground:
             self.direction.y = -20
+
+        if keys[pygame.K_f] and not self.shoot_timer.active:
+            print("shoot")
+            self.shoot_timer.activate()
 
     def collide(self, direction):
         for sprite in self.collision_sprites:
@@ -55,6 +63,7 @@ class Player(AnimatedSprite):
         self.image = pygame.transform.flip(self.image, self.flip, False)
 
     def update(self, dt):
+        self.shoot_timer.update()
         self.check_floor()
         self.input()
         self.move(dt)
