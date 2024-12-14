@@ -57,6 +57,9 @@ class Game:
                     self.collision_sprites
                 )
 
+        Bee((500, 600), self.bee_frames, self.all_sprites)
+        Worm((500, 800), self.worm_frames, self.all_sprites)
+
     def run(self):
         while self.running:
             dt = self.clock.tick(FRAMERATE) / 1000
