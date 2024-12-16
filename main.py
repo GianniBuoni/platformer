@@ -75,6 +75,9 @@ class Game:
                 worm_rect = pygame.FRect(obj.x, obj.y, obj.width, obj.height)
                 Worm(worm_rect, self.worm_frames, (self.all_sprites, self.enemy_sprites))
 
+        self.audio["music"].set_volume(0.1)
+        self.audio["music"].play(loops=-1)
+
     def create_bee(self):
         Bee(
             (self.level_w + WINDOW_WIDTH / 2, randint(0, self.level_h)),
@@ -83,6 +86,8 @@ class Game:
         )
 
     def create_bullet(self, player_pos, direction):
+        self.audio["shoot"].set_volume(0.5)
+        self.audio["shoot"].play()
         bullet_x = (
             player_pos[0] + direction * 34 if direction == 1
             else player_pos[0] + direction * 34 - self.bullet_surface.get_width()
@@ -106,6 +111,8 @@ class Game:
                 bullet, self.enemy_sprites, False, pygame.sprite.collide_mask
             )
             if sprite_collisions:
+                self.audio["impact"].set_volume(0.5)
+                self.audio["impact"].play()
                 bullet.kill()
                 for sprite in sprite_collisions:
                     sprite.destroy()
