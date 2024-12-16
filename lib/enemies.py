@@ -36,11 +36,19 @@ class Bee(Enemy):
             self.kill()
 
 class Worm(Enemy):
-    def __init__(self, pos, frames, groups):
-        super().__init__(pos, frames, groups)
+    def __init__(self, rect, frames, groups):
+        super().__init__(rect.topleft, frames, groups)
+        self.rect.bottomleft = rect.bottomleft
+        self.level_rect = rect
+
+        # movement
+        self.speed = 160
+        self.direction = 1
 
     def move(self, dt):
-        pass
+        self.rect.x += self.direction * self.speed * dt
 
     def constraint(self):
-        pass
+        if not self.level_rect.contains(self.rect):
+            self.direction *= -1
+            self.frames = [pygame.transform.flip(x, True, False) for x in self.frames]

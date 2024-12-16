@@ -28,7 +28,6 @@ class Game:
 
         # timers
         self.bee_timer = Timer(500, self.create_bee, autostart = True, repeat = True)
-        self.worm_timer = Timer(1000, self.create_worm, autostart = True)
 
     def load_assets(self):
         # player
@@ -71,6 +70,9 @@ class Game:
                     self.collision_sprites,
                     self.create_bullet
                 )
+            if obj.name == "Worm":
+                worm_rect = pygame.FRect(obj.x, obj.y, obj.width, obj.height)
+                Worm(worm_rect, self.worm_frames, self.all_sprites)
 
     def create_bee(self):
         Bee(
@@ -78,9 +80,6 @@ class Game:
             self.bee_frames,
             self.all_sprites,
         )
-
-    def create_worm(self):
-        Worm((500, 800), self.worm_frames, self.all_sprites)
 
     def create_bullet(self, player_pos, direction):
         bullet_x = (
@@ -110,7 +109,6 @@ class Game:
 
             # update
             self.bee_timer.update()
-            self.worm_timer.update()
             self.all_sprites.update(dt)
 
             # draw
