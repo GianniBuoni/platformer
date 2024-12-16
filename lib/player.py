@@ -3,8 +3,9 @@ from lib.sprites import *
 from lib.timers import Timer
 
 class Player(AnimatedSprite):
-    def __init__(self, pos, frames, groups, collision_sprites):
+    def __init__(self, pos, frames, groups, collision_sprites, bullet_func):
         super().__init__(pos, frames, groups)
+        self.create_bullet = bullet_func
 
         # movement
         self.direction = pygame.Vector2()
@@ -24,7 +25,10 @@ class Player(AnimatedSprite):
             self.direction.y = -20
 
         if keys[pygame.K_f] and not self.shoot_timer:
-            print("shoot")
+            self.create_bullet(
+                self.rect.center,
+                -1 if self.flip else 1
+            )
             self.shoot_timer.activate()
 
     def collide(self, direction):

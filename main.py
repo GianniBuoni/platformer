@@ -17,6 +17,7 @@ class Game:
         # groups
         self.all_sprites = AllSprites()
         self.collision_sprites = pygame.sprite.Group()
+        self.bullet_sprites = pygame.sprite.Group()
 
         # map setup
         self.load_assets()
@@ -62,7 +63,8 @@ class Game:
                     (obj.x, obj.y),
                     self.player_frames,
                     self.all_sprites,
-                    self.collision_sprites
+                    self.collision_sprites,
+                    self.create_bullet
                 )
 
     def create_bee(self):
@@ -70,6 +72,14 @@ class Game:
 
     def create_worm(self):
         Worm((500, 800), self.worm_frames, self.all_sprites)
+
+    def create_bullet(self, pos, direction):
+        Bullet(
+            pos,
+            self.bullet_surface,
+            direction,
+            (self.all_sprites, self.bullet_sprites)
+        )
 
     def run(self):
         while self.running:

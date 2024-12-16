@@ -20,8 +20,22 @@ class AllSprites(pygame.sprite.Group):
 class Sprite(pygame.sprite.Sprite):
     def __init__(self, pos, surface, groups):
         super().__init__(groups)
-        self.image = surface
+        self.image: pygame.Surface = surface
         self.rect = self.image.get_frect(topleft = pos)
+
+class Bullet(Sprite):
+    def __init__(self, pos, surface, direction, groups):
+        super().__init__(pos, surface, groups)
+
+        # flip with player
+        self.image = pygame.transform.flip(self.image, direction == -1, False)
+
+        # movement
+        self.direction = direction
+        self.speed = 850
+
+    def update(self, dt):
+        self.rect.x += self.direction * self.speed * dt
 
 class AnimatedSprite(Sprite):
     def __init__(self, pos, frames, groups):
