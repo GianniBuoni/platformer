@@ -73,9 +73,13 @@ class Game:
     def create_worm(self):
         Worm((500, 800), self.worm_frames, self.all_sprites)
 
-    def create_bullet(self, pos, direction):
+    def create_bullet(self, player_pos, direction):
+        bullet_x = (
+            player_pos[0] + direction * 34 if direction == 1
+            else player_pos[0] + direction * 34 - self.bullet_surface.get_width()
+        )
         Bullet(
-            pos,
+            (bullet_x, player_pos[1]),
             self.bullet_surface,
             direction,
             (self.all_sprites, self.bullet_sprites)
