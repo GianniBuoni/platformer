@@ -1,7 +1,10 @@
 # pyright: reportOptionalMemberAccess = false
+from random import randint
 from settings import *
+
 from lib.sprites import *
 from lib.helpers import *
+from lib.enemies import *
 from lib.player import Player
 from lib.timers import Timer
 
@@ -24,7 +27,7 @@ class Game:
         self.map_setup()
 
         # timers
-        self.bee_timer = Timer(500, self.create_bee, autostart = True)
+        self.bee_timer = Timer(500, self.create_bee, autostart = True, repeat = True)
         self.worm_timer = Timer(1000, self.create_worm, autostart = True)
 
     def load_assets(self):
@@ -42,6 +45,8 @@ class Game:
 
     def map_setup(self):
         map = load_pygame(join("data", "maps", "world.tmx"))
+        self.level_w = map.width * TILE_SIZE
+        self.level_h = map.height * TILE_SIZE
 
         for x, y, image in map.get_layer_by_name("Main").tiles():
             Sprite(
@@ -68,7 +73,11 @@ class Game:
                 )
 
     def create_bee(self):
-        Bee((500, 600), self.bee_frames, self.all_sprites)
+        Bee(
+            (self.level_w + WINDOW_WIDTH / 2, randint(0, self.level_h)),
+            self.bee_frames,
+            self.all_sprites,
+        )
 
     def create_worm(self):
         Worm((500, 800), self.worm_frames, self.all_sprites)

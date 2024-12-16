@@ -70,17 +70,3 @@ class AnimatedSprite(Sprite):
     def animate(self, dt):
         self.frames_idx += self.animation_speed * dt
         self.image = self.frames[int(self.frames_idx) % len(self.frames)]
-
-class Bee(AnimatedSprite):
-    def __init__(self, pos, frames, groups):
-        super().__init__(pos, frames, groups)
-
-    def update(self, dt):
-        self.animate(dt)
-
-class Worm(AnimatedSprite):
-    def __init__(self, pos, frames, groups):
-        super().__init__(pos, frames, groups)
-
-    def update(self, dt):
-        self.animate(dt)
