@@ -1,4 +1,5 @@
 # pyright: reportOptionalMemberAccess = false
+from lib.timers import Timer
 from settings import *
 
 class AllSprites(pygame.sprite.Group):
@@ -36,6 +37,30 @@ class Bullet(Sprite):
 
     def update(self, dt):
         self.rect.x += self.direction * self.speed * dt
+
+class Fire(Sprite):
+    def __init__(self, pos, surface, groups, player):
+        super().__init__(pos, surface, groups)
+        self.player = player
+        self.timer = Timer(100, autostart = True, func = self.kill)
+
+        # positioning
+        self.flip = player.flip
+        self.y_offset = pygame.Vector2(0,8)
+        self.update_pos(True)
+
+    def update_pos(self, init = False):
+        if self.player.flip:
+            self.rect.midright = self.player.rect.midleft + self.y_offset
+            if init:
+                self.image = pygame.transform.flip(self.image, True, False)
+        else:
+            self.rect.midleft = self.player.rect.midright + self.y_offset
+
+    def update(self, _):
+        self.timer.update()
+        self.update_pos()
+        if self.flip != self.player.flip: self.kill()
 
 class AnimatedSprite(Sprite):
     def __init__(self, pos, frames, groups):

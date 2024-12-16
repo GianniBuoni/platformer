@@ -84,6 +84,12 @@ class Game:
             direction,
             (self.all_sprites, self.bullet_sprites)
         )
+        Fire(
+            player_pos,
+            self.fire_surface,
+            self.all_sprites,
+            self.player
+        )
 
     def run(self):
         while self.running:
