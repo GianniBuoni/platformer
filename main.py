@@ -1,9 +1,9 @@
 # pyright: reportOptionalMemberAccess = false
-from pygame.mixer import music
 from settings import *
 from lib.sprites import *
 from lib.helpers import *
 from lib.player import Player
+from lib.timers import Timer
 
 class Game:
     def __init__(self):
@@ -21,6 +21,10 @@ class Game:
         # map setup
         self.load_assets()
         self.map_setup()
+
+        # timers
+        self.bee_timer = Timer(500, self.create_bee, autostart = True)
+        self.worm_timer = Timer(1000, self.create_worm, autostart = True)
 
     def load_assets(self):
         # player
@@ -61,7 +65,10 @@ class Game:
                     self.collision_sprites
                 )
 
+    def create_bee(self):
         Bee((500, 600), self.bee_frames, self.all_sprites)
+
+    def create_worm(self):
         Worm((500, 800), self.worm_frames, self.all_sprites)
 
     def run(self):
@@ -73,6 +80,8 @@ class Game:
                     self.running = False
 
             # update
+            self.bee_timer.update()
+            self.worm_timer.update()
             self.all_sprites.update(dt)
 
             # draw
